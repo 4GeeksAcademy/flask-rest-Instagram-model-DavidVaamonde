@@ -43,8 +43,8 @@ class Follower(db.Model):
 
     # Relación muchos a uno con User, la tabla "uno"
     # Claves foráneas que hace referencia a la tabla "uno" (User)
-    user_from_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
-    user_to_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
+    user_from_id: Mapped[int] = mapped_column(ForeignKey('user.id'), unique=True, nullable=False)
+    user_to_id: Mapped[int] = mapped_column(ForeignKey('user.id'), unique=True, nullable=False)
     # Relaciones con User, la tabla "uno"
     from_id_1 = relationship("User", back_populates="from_id") 
     to_id_2 = relationship("User", back_populates="to_id") 
@@ -64,13 +64,13 @@ class Comment(db.Model):
     
     # Relación muchos a uno con User, la tabla "uno"
     # Clave foránea que hace referencia a la tabla "uno" (User)
-    author_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
+    author_id: Mapped[int] = mapped_column(ForeignKey('user.id'), unique=True, nullable=False)
     # Esta línea define la relación desde el lado "muchos"
     user = relationship("User", back_populates="posts")
 
     # Relación muchos a uno con Post, la tabla "uno"
     # Clave foranea que hace referencia a la tabla "uno" (Post)
-    post_id: Mapped[int] = mapped_column(ForeignKey('post.id'), nullable=False)
+    post_id: Mapped[int] = mapped_column(ForeignKey('post.id'), unique=True, nullable=False)
     # Esta línea define la relación desde el lado "muchos"
     posts = relationship("Post", back_populates="comments")
 
@@ -90,7 +90,7 @@ class Post(db.Model):
 
     # Relación muchos a uno con User, la tabla "uno"
     # Clave foránea que hace referencia a la tabla "uno" (User)
-    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), unique=True, nullable=False)
     # Esta línea define la relación desde el lado "muchos"
     user = relationship("User", back_populates="comments")
 
@@ -116,7 +116,7 @@ class Media(db.Model):
     url: Mapped[str] = mapped_column(String(200), unique=True, nullable=False)
 
      # Clave foránea que referencia a la tabla "uno" (Post)
-    post_id: Mapped[int] = mapped_column(ForeignKey('post.id'), nullable=False)
+    post_id: Mapped[int] = mapped_column(ForeignKey('post.id'), unique=True, nullable=False)
 
     # Relación con Post, la tabla "uno"
     posts = relationship("Post", back_populates="medias")
