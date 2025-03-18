@@ -12,9 +12,9 @@ class User(db.Model):
     # Clave primaria
     id: Mapped[int] = mapped_column(primary_key=True)
     # Propiedades de la tabla
-    username: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-    first_name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-    last_name: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
+    username: Mapped[str] = mapped_column(String(120), nullable=False)
+    first_name: Mapped[str] = mapped_column(String(120), nullable=False)
+    last_name: Mapped[str] = mapped_column(String(120), nullable=False)
     mail: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
 
     # Relacion uno a muchos con Post, la tabla "muchos"
@@ -23,8 +23,8 @@ class User(db.Model):
 
     # Relaciones con Follower, la tabla "muchos"
     # Esta línea define la relación desde el lado "uno", tabla post
-    from_id = relationship("Follower", back_populates="from_id1")
-    to_id = relationship("Follower", back_populates="to_id2")
+    from_id = relationship("Follower", back_populates="from_id_1")
+    to_id = relationship("Follower", back_populates="to_id_2")
 
     # Función para renderizar los datos de la tabla
     def serialize(self):
@@ -46,8 +46,8 @@ class Follower(db.Model):
     user_from_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
     user_to_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
     # Relaciones con User, la tabla "uno"
-    from_id1 = relationship("User", back_populates="from_id") 
-    to_id2 = relationship("User", back_populates="to_id") 
+    from_id_1 = relationship("User", back_populates="from_id") 
+    to_id_2 = relationship("User", back_populates="to_id") 
 
     def serialize(self):
         return {
@@ -60,7 +60,7 @@ class Comment(db.Model):
     __tablename__ = "comment"
     
     id: Mapped[int] = mapped_column(primary_key=True)
-    comment_text: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
+    comment_text: Mapped[str] = mapped_column(String(120), nullable=False)
     
     # Relación muchos a uno con User, la tabla "uno"
     # Clave foránea que hace referencia a la tabla "uno" (User)
